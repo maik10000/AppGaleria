@@ -83,3 +83,4 @@ Por defecto, el proyecto estará disponible en `http://localhost:8000`.
   php artisan config:clear
   php artisan route:clear
   ```
+## Muchas Gracias!
