@@ -7,14 +7,14 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Validation\ValidationException;
 
-class StoreDeleteRequest extends FormRequest
+class LoginRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return true;
+        return $this->isMethod('POST');
     }
 
     /**
@@ -25,16 +25,18 @@ class StoreDeleteRequest extends FormRequest
     public function rules()
     {
         return [
-            'uuid_name'=> 'required|uuid|exists:photos,uuid_name',
+           
+            'email' => 'required|email|max:255',
+            'password' => 'required|string',
         ];
     }
 
     public function messages()
     {
         return [
-            'uuid_name.required' => 'se requiere uuid de la imagen',
-            'uuid_name.uuid' => 'el UUID no es valido',
-            'uuid_name.exists' => 'el UUID no es valido',
+            'email.required' => 'El correo electrónico es obligatorio.',
+            'email.email' => 'El formato del correo es incorrecto',
+            'password.required' => 'Ingrese la contraseña',
         ];
     }
 

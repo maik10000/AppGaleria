@@ -29,7 +29,7 @@ class UserRegisterRequest extends FormRequest
             'email' => 'required|email|max:255|unique:users,email',
             'phone' => 'required|digits:10',
             'password' => 'required|string|min:8|confirmed',
-            'age' => 'required|date|before:today',
+            'age' => 'required|integer|min:1',
         ];
     }
 
@@ -42,7 +42,8 @@ class UserRegisterRequest extends FormRequest
             'email.unique' => 'Este correo ya está registrado.',
             'phone.digits' => 'El número de teléfono debe tener 10 dígitos.',
             'password.confirmed' => 'Las contraseñas no coinciden.',
-            'age.before' => 'La fecha de nacimiento debe ser anterior a hoy.',
+            'age.integer' => 'Tiene que ser un numero',
+            'age.min' => 'No puede ser menor que o igual que 0'
         ];
     }
 

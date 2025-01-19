@@ -28,7 +28,6 @@ class StorePostRequest extends FormRequest
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
             'image_path' => 'required|image|mimes:jpeg,png,gif|max:2048', // Hasta 2MB
-            'user_id' => 'required|exists:users,id', // Verifica que el ID del usuario exista.
         ];
     }
 
@@ -43,8 +42,6 @@ class StorePostRequest extends FormRequest
             'image_path.image' => 'El archivo debe ser una imagen.',
             'image_path.mimes' => 'La imagen debe ser en formato JPEG, PNG o GIF.',
             'image_path.max' => 'La imagen no puede superar los 2MB.',
-            'user_id.required' => 'El usuario es obligatorio.',
-            'user_id.exists' => 'El usuario seleccionado no existe.',
         ];
     }
 

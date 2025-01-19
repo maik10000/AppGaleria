@@ -7,7 +7,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Validation\ValidationException;
 
-class StoreDeleteRequest extends FormRequest
+class PasswReques extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,16 +25,19 @@ class StoreDeleteRequest extends FormRequest
     public function rules()
     {
         return [
-            'uuid_name'=> 'required|uuid|exists:photos,uuid_name',
+            'oldpassword' => 'required|string|',
+            'password' => 'required|string|min:8|confirmed',
+
         ];
+       
     }
 
     public function messages()
     {
         return [
-            'uuid_name.required' => 'se requiere uuid de la imagen',
-            'uuid_name.uuid' => 'el UUID no es valido',
-            'uuid_name.exists' => 'el UUID no es valido',
+            'oldpassword.required' => 'Ingrese su contraseña actual',
+            'password.confirmed' => 'Las contraseñas no coinciden.',
+            'password.string' => 'La contraseña no es un texto'
         ];
     }
 

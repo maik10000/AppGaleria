@@ -29,7 +29,6 @@ class StoreUpdateRequest extends FormRequest
             'uuid_name'=> 'required|uuid|exists:photos,uuid_name',
             'description' => 'nullable|string',
             'image_path' => 'required|image|mimes:jpeg,png,gif|max:2048',
-            'id_user' => 'required|exists:users,id', 
         ];
     }
 
@@ -47,8 +46,6 @@ class StoreUpdateRequest extends FormRequest
             'image_path.image' => 'El archivo debe ser una imagen.',
             'image_path.mimes' => 'La imagen debe ser en formato JPEG, PNG o GIF.',
             'image_path.max' => 'La imagen no puede superar los 2MB.',
-            'id_user.required' => 'El usuario es obligatorio.',
-            'id_user.exists' => 'El usuario seleccionado no existe.',
         ];
     }
 

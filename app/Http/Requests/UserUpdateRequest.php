@@ -26,10 +26,9 @@ class UserUpdateRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:255',
-            'email' => 'required|email|max:255|unique:users,email',
-            'phone' => 'required|digits:10|unique:users,phone',
-            'age' => 'required|date|before:today',
-            'id_user' => 'required|exists:users,id',
+            'email' => 'required|email|max:255',
+            'phone' => 'required|digits:10',
+            'age' => 'required|integer|min:1',
         ];
     }
 
@@ -39,11 +38,9 @@ class UserUpdateRequest extends FormRequest
             'name.required' => 'El nombre es obligatorio.',
             'email.required' => 'El correo electrónico es obligatorio.',
             'email.email' => 'El formato del correo es incorrecto',
-            'email.unique' => 'Este correo ya está registrado.',
             'phone.digits' => 'El número de teléfono debe tener 10 dígitos.',
-            'age.before' => 'La fecha de nacimiento debe ser anterior a hoy.',
-            'id_user.required' => 'El usuario es obligatorio.',
-            'id_user.exists' => 'El usuario no existe.',
+            'age.integer' => 'Tiene que ser un numero',
+            'age.min' => 'No puede ser menor que o igual que 0'
         ];
     }
 

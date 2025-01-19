@@ -2,35 +2,22 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\PasswReques;
 use App\Http\Requests\UserUpdateRequest;
 use App\Models\User;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
-
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.
      */
     public function update(UserUpdateRequest $request)
     {
-        $user = User::find($request->id_user);
+        $user = User::find(Auth::user()->id);
+
         $user->update([
             'name' => $request->name,
             'email'=> $request->email,
@@ -38,15 +25,32 @@ class UserController extends Controller
             'age' => $request->age
         ]);
 
-        return response()->json(["succes"=>"Se actualizo correctamente"],200);
+        return response()->json(["data"=>$user],200);
+    }
+
+
+    public function resetPassw(PasswReques $request){
+
+        if(!Hash::check($request->oldpassword,Auth::User()->password)){
+
+            return response()->json(['erro'=> 'Contraseña incorrecta'],400);
+        }
+
+        $user = User::find(Auth::user()->id);
+         $user ->forceFill([
+            'password' => Hash::make($request->password)
+        ]);
+        
+        $user->save();
+        return response()->json(['Succes'=> 'Contraseña se cambio'],200);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Request $request)
+    public function destroy()
     {
-       $user = User::find($request->id_user);
+        $user = User::find(Auth::user()->id);
 
        $user->update([
         'state'=>false

@@ -17,6 +17,12 @@ class Photo extends Model
         'state'
     ];
 
+    protected $hidden = [
+        'state',
+        'user_id',
+        'image_path'
+    ];
+
     public function user(){
         return $this->belongsTo(User::class);
     }

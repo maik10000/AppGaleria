@@ -27,10 +27,23 @@ class ManagerFiles{
         
       }catch(Exception $e){
 
-         throw new HttpResponseException( response()->json(['message' => 'A ocurrido un error al guardar el archivo intente mas tarde'],400));
+          throw new HttpResponseException( response()->json(['message' => 'A ocurrido un error al guardar el archivo intente mas tarde'],400));
          
       }
 
+    }
+
+    public function ExtractName($filename){
+        return explode('.',$filename)[0];
+    }
+
+    public function RenameDirectory($path){
+
+    }
+
+    public function Exist($path){
+
+       return Storage::disk($this->disk)->exists($path);
     }
 
     public function Actualizar($imagen,$nombre,$uuid_name,$oldPath){
@@ -47,7 +60,8 @@ class ManagerFiles{
           }
           
         $new_path =  Storage::disk('local')->putFileAs($pathfolder,$imagen,$nombreArchivo);
-        return $new_path;
+        $url = Storage::url($new_path);
+        return ['new' => $new_path, 'link' => $url];
 
         }catch(Exception $e){
           throw new HttpResponseException( response()->json(['message' => 'A ocurrido un error al guardar el archivo intente mas tarde'],400));

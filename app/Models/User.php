@@ -28,7 +28,6 @@ class User extends Authenticatable implements JWTSubject
         'state'
     ];
 
-
     /**
      * The attributes that should be hidden for serialization.
      *
@@ -57,10 +56,10 @@ class User extends Authenticatable implements JWTSubject
         return $this->hasMany(Photo::class);
     }
 
+
     public function getPhoto($uuid){
         return $this->photos()->where('uuid_name',$uuid)->first();
     }
-
     // Rest omitted for brevity
 
     /**

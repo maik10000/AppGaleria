@@ -8,9 +8,7 @@ use App\Http\Requests\StoreUpdateRequest;
 use App\Http\Services\ManagerFiles;
 use App\Models\Photo;
 use App\Models\User;
-use Illuminate\Contracts\Cache\Store;
-use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Auth;
 
 class PhotoController extends Controller
 {
@@ -28,8 +26,9 @@ class PhotoController extends Controller
      */
     public function store(StorePostRequest $request)
     {   
-        $user = User::find($request->user_id);
-        $imagePath = $this->serv_file->Guardar( $request->file('image_path'),$user->name);
+        $user = User::find(Auth::user()->id);
+     
+        $imagePath = $this->serv_file->Guardar( $request->file('image_path'),$user->id);
 
         Photo::create([
             'title' => $request->title,
@@ -46,9 +45,11 @@ class PhotoController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Photo $photo)
+    public function show()
     {
-        //
+        $user = User::find(Auth::user()->id);
+        $photos = $user->photos()->where('state',1)->get();
+        return response()->json(['images'=>$photos],200);
     }
 
     /**
@@ -56,16 +57,15 @@ class PhotoController extends Controller
      */
     public function update(StoreUpdateRequest $request)
     {
-
-        $user = User::find($request->id_user);
+        $user = User::find(Auth::user()->id);
         $img = $user->getPhoto($request->uuid_name);
-     
-        $new_path = $this->serv_file->Actualizar( $request->file('image_path'),$user->name,$img->uuid_name,$img->image_path);
+        $new_path = $this->serv_file->Actualizar( $request->file('image_path'),$user->id,$img->uuid_name,$img->image_path);
 
          $img->update([
             'title' => $request->title,
             'description' => $request->description,
-            'image_path' => $new_path
+            'image_path' => $new_path['new'],
+            'image_link' => $new_path['link']
          ]);
         
 
@@ -78,7 +78,7 @@ class PhotoController extends Controller
     public function destroy(StoreDeleteRequest $reques)
     {   
         
-        $user = User::find($reques->id_user);
+        $user = User::find(Auth::user()->id);
         $img = $user->getPhoto($reques->uuid_name);
         $img->update([ 'state' => false ]);
 
